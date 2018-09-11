@@ -1,4 +1,3 @@
-
 from flask import Flask, render_template, request, url_for, json, jsonify
 import os
 import re
@@ -56,10 +55,10 @@ def searchPlace(text):
             address = place_json['candidates'][0]['formatted_address']
             place_loc = place_json['candidates'][0]['geometry']['location']
             name = place_json['candidates'][0]['name']
-            response = {'name': name, 'address': address, 'location': place_loc}
+            response = {'status': 'OK', 'name': name, 'address': address, 'location': place_loc}
 
         else:
-            response = '---Place not found---'
+            response = {'status': 'ZERO_RESULT'}
 
     except requests.exceptions.RequestExceptions as error:
         response = str(error)
@@ -83,7 +82,7 @@ def post():
     question = request.form['user_input']
     search = stringParser(question)
     place = searchPlace(search)
-    return jsonify(search, place)
+    return jsonify(place)
 
 if __name__ == '__main__':
     app.run(debug=True)

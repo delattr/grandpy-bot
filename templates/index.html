@@ -1,74 +1,23 @@
-<!doctype html>
-<html lang="fr">
-
-<head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <!--Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
-        crossorigin="anonymous">
-    <style>
-        body{
-        width: 100%;
-        height: 100vh;
-    }
-   
-    #myflexbox{
-        background-color: beige;
-        height: 100%;
-        
-    }
-    #chatlog{
-        
-        overflow-y: auto;
-        height: 100%;
-    }
-    </style>
-    <title>Grandpy</title>
-</head>
-
-<body>
-
-    <div id="myflexbox" class="d-flex flex-column">
-        <div class="p-2 mb-3 border bg-info">
-            <h1 class="text-center">GrandPy</h1>
-        </div>
-
-        <div class="w-75 p-2 align-self-center flex-grow-1 bg-light rounded" id="chatlog" >
-    
-            
-        </div> 
-        <div class="w-75 align-self-center pt-2">
-            <form id="form1">
-                <div class="input-group mt-mr-md-3">
-                    <input type="text" class="form-control" placeholder="Avez-vous des questions ?" name="user_input" id="user_input">
-                    <div class="input-group-append">
-                        <button class="btn btn-info" type="submit">Envoyer</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        
-
-
-        <div class="mt-3 p-2 bg-info">
-            <p class="text-center">copyright</p>
-        </div>
+{% extends 'layout.html' %}
+{% block content %}
+<div id="myflexbox" class="d-flex flex-column">
+    <div class="p-2 mb-3 border bg-info">
+        <h1 class="text-center">GrandPy</h1>
     </div>
-
-
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-        crossorigin="anonymous"></script>
-    <script src="{{ url_for('static', filename='ajax.js') }}"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ config['API_KEY'] }}&libraries=places&callback=initMap"></script> -->
-</body>
-
-</html>
+    <div class="w-75 p-2 align-self-center flex-grow-1 bg-light rounded" id="chatlog">
+    </div>
+    <div class="w-75 align-self-center pt-2">
+        <form id="form1">
+            <div class="input-group mt-mr-md-3">
+                <input type="text" class="form-control" placeholder="Avez-vous des questions ?" name="user_input" id="user_input">
+                <div class="input-group-append">
+                    <button class="btn btn-info" type="submit">Envoyer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="mt-3 p-2 bg-info">
+        <p class="text-center">copyright</p>
+    </div>
+</div>
+{%endblock %}
