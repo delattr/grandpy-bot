@@ -12,8 +12,9 @@ app.config.from_pyfile('config.py')
 # Convert Json to Object
 def getJson():
     path_json = os.path.join(app.root_path, 'static', 'stopwords.json')
+    path_json = os.path.join(app.root_path, 'static', 'stopwords.json')
     with open(path_json) as f:
-        data = json.load(f)       
+        data = json.load(f)
     return set(data)
 
 
@@ -26,51 +27,59 @@ def stringParser(text):
     return string_parsed
 
 
-def searchPlace(text):
-   
-    place_search = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
-    # text_search = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
-    # place_detail = 'https://maps.googleapis.com/maps/api/place/details/json'
-    
-    place_payload = {'key': app.config['API_KEY'], 
-                     'input': text,
-                     'inputtype': 'textquery',
-                     'language': 'fr', 
-                     'locationbias': 'ipbias', 
-                     'fields': 'formatted_address,name,geometry'}
-
-    # text_payload = {'key': app.config['API_KEY'], 'query': text +', en france', 'region': 'fr', 'language': 'fr' }
-    # detail_payload = {'key': app.config['API_KEY'], 'placeid': ''}
-
-    name = ''
-    address = ''
-    place_loc = ''
-    
+def getPlace(text):
+    url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
+    payload = {'key': app.config['API_KEY'],
+               'input': text,
+               'inputtype': 'textquery',
+               'language': 'fr',
+               'locationbias': 'ipbias',
+               'fields': 'place_id,formatted_address,name,geometry'}
     try:
-        place_req = requests.get(place_search, params=place_payload)
-        place_json = place_req.json()
-        place_req.raise_for_status()
-        
-        if  place_json['status'] == 'OK':
-            address = place_json['candidates'][0]['formatted_address']
-            place_loc = place_json['candidates'][0]['geometry']['location']
-            name = place_json['candidates'][0]['name']
-            response = {'status': 'OK', 'name': name, 'address': address, 'location': place_loc}
+        req = requests.get(url, params=payload)
+        response = req.json()
+        req.raise_for_status()
 
+        if response['status'] == 'OK':
+            results = response['candidates'][0]
+            status = response['status']
+            address = results['formatted_address']
+            location = results['geometry']['location']
+            name = results['name']
+            place_id = results['place_id']
+            voie = getRouteName(place_id)
         else:
-            response = {'status': 'ZERO_RESULT'}
+            data = {'status': response['status']}
 
-    except requests.exceptions.RequestExceptions as error:
-        response = str(error)
-        
-    # try: 
-    #     detail_req = requests.get(place_detail, params=detail_payload)
-    #     detail_json = detail_req.json()
-    #     if  detail_json['status'] == 'OK':
-    #         respons2= place_json['address_components'][1]['long_name']
-    # except requests.exceptions.RequestExceptions as error:
-    #     response2 = error 
-    return response
+        data = {'status': status,
+                'name': name,
+                'address': address,
+                'location': location,
+                'route': voie}
+
+        return data
+    except requests.exceptions.HTTPError as err:
+        return err
+
+
+def getRouteName(place_id):
+    url = 'https://maps.googleapis.com/maps/api/place/details/json'
+    payload = {'key': app.config['API_KEY'],
+               'placeid': place_id,
+               'fields': 'address_components'}
+    try:
+        req = requests.get(url, params=payload)
+        response = req.json()
+        req.raise_for_status()
+        print(response)
+        address_components = response['result']['address_components']
+        for i, v in enumerate(address_components):
+            if v['types'][0] == 'route':
+                voie = address_components[i]['long_name']
+        return voie
+    except requests.exceptions.HTTPError as err:
+        return err
+
 
 @app.route("/")
 def index():
@@ -81,8 +90,9 @@ def index():
 def post():
     question = request.form['user_input']
     search = stringParser(question)
-    place = searchPlace(search)
+    place = getPlace(search)
     return jsonify(place)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

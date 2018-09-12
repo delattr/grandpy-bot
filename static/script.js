@@ -2,8 +2,9 @@ var form = document.getElementById("form1");
 var question = document.getElementById("user_input");
 var chatboxElt = document.getElementById("chatlog");
 var count = 0;
+
 //  Flexbox for speech bubble
-function createFlexBox(align, color, msg='') { 
+function createFlexBox(align, color, msg = '') {
     // Create flexbox
     let flexElt = document.createElement('div');
     flexElt.className = 'd-flex flex-column ' + align;
@@ -15,26 +16,25 @@ function createFlexBox(align, color, msg='') {
     flexElt.appendChild(contentElt);
     return flexElt;
 }
+
 // Create response from JSON retrieved
 function grandPyResponse(data) {
     // Create id for google map
     var mapId = 'map' + count++;
     // Check contents of data
     if (data.status === 'OK') {
-        let speechBallon = createFlexBox('align-items-start', 'secondary', msg=data.address);
-        
-        
+        let speechBallon = createFlexBox('align-items-start', 'secondary', msg = data.address + ' ' + data.route);
         // Create div for google maps
         let gMap = document.createElement('div');
         gMap.id = mapId;
-        gMap.className ='newMap p-1 m-2 rounded shadow'
+        gMap.className = 'newMap p-1 m-2 rounded shadow'
         speechBallon.appendChild(gMap);
 
         chatboxElt.appendChild(speechBallon);
-        createMap(data.location, mapId);    
+        createMap(data.location, mapId);
 
     } else { // if result = 0 print error
-        let speechBalloon = createFlexBox('align-items-start', 'secondary', msg=data.status);
+        let speechBalloon = createFlexBox('align-items-start', 'secondary', msg = data.status);
         chatboxElt.appendChild(speechBalloon);
     }
     chatboxElt.scrollTop = chatboxElt.scrollHeight;
@@ -59,7 +59,7 @@ function postAjax() {
 // Posts user input on the chatbox when submit event is evolked
 form.addEventListener("submit", function (e) {
     e.preventDefault();
-    let userInput = createFlexBox('align-items-end', 'primary', msg=question.value);
+    let userInput = createFlexBox('align-items-end', 'primary', msg = question.value);
     chatboxElt.appendChild(userInput);
     chatboxElt.scrollTop = chatboxElt.scrollHeight;
     postAjax();
