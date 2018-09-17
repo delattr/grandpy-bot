@@ -1,26 +1,31 @@
 {% extends 'layout.html' %}
 {% block content %}
-<div id="myflexbox" class="d-flex flex-column">
-    <div class="p-2 mb-3 border bg-info">
-        <h1 class="text-center">GrandPy</h1>
-    </div>
-    <div class="w-75 p-2 align-self-center flex-grow-1 bg-light rounded" id="chatlog">
+<div class="container h-100">
+    <div class="d-flex flex-column h-100">
+        <!-- header -->
+        <div class="mb-3 border-bottom">
+            <h1 class="text-center">GrandPy</h1>
+        </div>
 
-    </div>
-    <div class="w-75 align-self-center pt-2">
-        <form id="form1">
-            <div class="input-group mt-mr-md-3">
+        <!-- chatting box -->
+        <div class="mb-2 p-2 flex-grow-1 bg-light rounded" id="chatlog">
+        </div>
+
+        <!-- form -->
+        <form id="form">
+            <div class="input-group">
                 <input type="text" class="form-control" placeholder="Posez-vous une question" name="user_input" id="user_input">
                 <div class="input-group-append">
                     <button class="btn btn-info" type="submit">Envoyer</button>
                 </div>
             </div>
         </form>
+
+        <!-- footer -->
+        <div class="mt-3">
+            <p class="text-center border-top">copyright</p>
+        </div>
     </div>
-    <div class="mt-3 p-2 bg-info">
-        <p class="text-center">copyright</p>
-    </div>
-    <div id="king" class='newMap'></div>
 </div>
 
 {%endblock %}
