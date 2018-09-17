@@ -8,13 +8,14 @@ body {
 }
 
 a {
-    color: skyblue;
+    color: rgb(33, 170, 224);
 }
 
 h2 {
     font-size: 20px;
     display: none;
 }
+
 
 .user {
     background-color: white;

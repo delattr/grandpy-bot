@@ -51,7 +51,7 @@ $(document).ready(function () {
     }
 
     // Display google maps object
-    function createMap(location) {
+    function createMap(r) {
         chatOutput('grandpy', "");
         $("#" + logId).css({
             width: '400px',
@@ -61,13 +61,23 @@ $(document).ready(function () {
         $("#chatlog").scrollTop($('#chatlog')[0].scrollHeight);
 
         var map = new google.maps.Map(document.getElementById(logId), {
-            center: location,
+            center: r.location,
             zoom: 12
         });
         var marker = new google.maps.Marker({
-            position: location,
+            position: r.location,
             map: map
         });
+
+        var infowindow = new google.maps.InfoWindow({
+            content: `<b>${r.name}</b><br>${r.address}</div>`,
+            maxWidth: 200
+        });
+
+        map.addListener("tilesloaded", () => {
+            infowindow.open(map, marker);
+        });
+
 
     }
     // Submit event
@@ -88,18 +98,21 @@ $(document).ready(function () {
         if (response.status == 'OK') {
             var promise = loader(chatOutput);
             promise.then(function () {
-                chatOutput('grandpy', response.address)
-                return loader()
+                var answer = "Bien sûr mon poussin ! La voici : <br>"
+                chatOutput('grandpy', answer + "<b>" +
+                    response.address + "</b>");
+                return loader();
             }).then(function () {
-                createMap(response.location)
-                return loader()
+                createMap(response);
+                return loader();
             }).then(function () {
-                chatOutput('grandpy', response.wiki)
+                var answer = "Mais t'ai-je déjà raconté l'histoire de ce quartier qui m'a vu en culottes courtes ?<br> "
+                chatOutput('grandpy', answer + response.wiki);
             });
 
         } else {
             loader().then(function () {
-                chatOutput('grandpy', response.status);
+                chatOutput('grandpy', "Désolé, mon poussin. Je ne connais pas l'adresse");
             });
         }
 

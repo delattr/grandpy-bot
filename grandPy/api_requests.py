@@ -29,6 +29,7 @@ def search_place(text, key):
                     'address': result['formatted_address'],
                     'location': result['geometry']['location'],
                     'route': route,
+                    'types': result['types'][0],
                     'wiki': wiki}
         else:
             data = {'status': response['status']}
@@ -49,7 +50,7 @@ def getDetail(place_id, key):
         req.raise_for_status()
 
         address_components = response['result']['address_components']
-        print(address_components)
+
         for i, v in enumerate(address_components):
 
             if v['types'][0] == 'route':
@@ -75,7 +76,7 @@ def wiki_search(text):
         "generator": "search",
         "utf8": 1,
         "inprop": "url",
-        "exchars": "500",
+        "exchars": "1000",
         "gsrsearch": text,
         "gsrnamespace": "0",
         "gsrlimit": "1"
@@ -85,11 +86,13 @@ def wiki_search(text):
 
     req = requests.get(url, params=payload)
     result = req.json()
-    print(result)
+
     for k, v in result['query']['pages'].items():
         if k == -1:
-            response = 'no results found'
+            response = "Oh, mon poussin. Je ne connais pas très bien " \
+                       "le quariter."
         else:
             data = v
-            response = f'{data["extract"]} <a href = "{data["fullurl"]}">[Wikipedia]</a>'
+            response = f'{data["extract"]} <a href = "{data["fullurl"]}">'\
+                       '[En sovir plus sur Wikipedia]</a>'
     return response
