@@ -2,6 +2,7 @@ import requests
 
 
 def search_place(text, key):
+    """ Call Google Place API to get basic information of a place"""
 
     url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
     payload = {
@@ -20,11 +21,13 @@ def search_place(text, key):
 
         if response['status'] == 'OK':
             result = response['candidates'][0]
-            # get place ID from response
+            # Get place ID from response
             place_id = result['place_id']
-            # get information using place_id
+            # Get information using place_id
             route = get_detail(place_id, key)
+            # Search route name from wikipedia
             wiki = wiki_search(route)
+            # Select only necesary data
             data = {'status': response['status'],
                     'name': result['name'],
                     'address': result['formatted_address'],
@@ -39,6 +42,8 @@ def search_place(text, key):
 
 
 def get_detail(place_id, key):
+    """Get route name of a place using Google Place Detail API"""
+
     url = 'https://maps.googleapis.com/maps/api/place/details/json'
     payload = {'key': key,
                'placeid': place_id,
@@ -57,14 +62,13 @@ def get_detail(place_id, key):
                 break
             else:  # Get first element from address_compnnents
                 route = response['result']['name']
-        # Search info from wiki using route name
-
         return route
     except requests.exceptions.HTTPError:
         return {'status': str(req.status_code) + " " + req.reason}
 
 
 def wiki_search(text):
+    """Search route name from Wikipedia"""
 
     url = "https://fr.wikipedia.org/w/api.php"
 
@@ -79,19 +83,25 @@ def wiki_search(text):
         "gsrsearch": text,
         "gsrnamespace": "0",
         "gsrlimit": "1"
-        # "explaintext": 1
-        # "exsectionformat": "plain"
+
     }
 
-    req = requests.get(url, params=payload)
-    result = req.json()
-    print(result)
-    for k, v in result['query']['pages'].items():
-        if k == -1:
-            response = "Oh, mon poussin. Je ne connais pas très bien " \
-                       "le quariter."
-        else:
-            data = v
-            response = f'{data["extract"]} <a href = "{data["fullurl"]}"'\
-                ' target="_blank">[En sovir plus sur Wikipedia]</a>'
-    return response
+    try:
+        req = requests.get(url, params=payload)
+        req.raise_for_status()
+
+    except requests.exceptions.HTTPError:
+        return {'status': str(req.status_code) + " " + req.reason}
+
+    else:
+        result = req.json()
+        print(result)
+        for k, v in result['query']['pages'].items():
+            if k == -1:
+                response = "Oh, mon poussin. Je ne connais pas très bien " \
+                    "le quariter."
+            else:
+                data = v
+                response = f'{data["extract"]} <a href = "{data["fullurl"]}"'\
+                    ' target="_blank">[En sovir plus sur Wikipedia]</a>'
+        return response

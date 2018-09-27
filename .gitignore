@@ -3,3 +3,5 @@
 .idea/
 instance/
 temp/
+htmlcov/
+.pytest_cashe/
