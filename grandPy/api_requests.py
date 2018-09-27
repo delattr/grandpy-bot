@@ -14,40 +14,39 @@ def search_place(text, key):
     }
     try:
         req = requests.get(url, params=payload)
-        response = req.json()
         req.raise_for_status()
+        response = req.json()
+        print(response)
 
         if response['status'] == 'OK':
             result = response['candidates'][0]
             # get place ID from response
             place_id = result['place_id']
             # get information using place_id
-            route = getDetail(place_id, key)
+            route = get_detail(place_id, key)
             wiki = wiki_search(route)
             data = {'status': response['status'],
                     'name': result['name'],
                     'address': result['formatted_address'],
                     'location': result['geometry']['location'],
                     'route': route,
-                    'types': result['types'][0],
                     'wiki': wiki}
         else:
             data = {'status': response['status']}
-
         return data
-    except requests.exceptions.HTTPError as err:
-        return err
+    except requests.exceptions.HTTPError:
+        return {'status': str(req.status_code) + " " + req.reason}
 
 
-def getDetail(place_id, key):
+def get_detail(place_id, key):
     url = 'https://maps.googleapis.com/maps/api/place/details/json'
     payload = {'key': key,
                'placeid': place_id,
                'fields': 'address_components,name'}
     try:
         req = requests.get(url, params=payload)
-        response = req.json()
         req.raise_for_status()
+        response = req.json()
 
         address_components = response['result']['address_components']
 
@@ -61,8 +60,8 @@ def getDetail(place_id, key):
         # Search info from wiki using route name
 
         return route
-    except requests.exceptions.HTTPError as err:
-        return err
+    except requests.exceptions.HTTPError:
+        return {'status': str(req.status_code) + " " + req.reason}
 
 
 def wiki_search(text):
@@ -76,7 +75,7 @@ def wiki_search(text):
         "generator": "search",
         "utf8": 1,
         "inprop": "url",
-        "exchars": "1000",
+        "exchars": "600",
         "gsrsearch": text,
         "gsrnamespace": "0",
         "gsrlimit": "1"
@@ -86,13 +85,13 @@ def wiki_search(text):
 
     req = requests.get(url, params=payload)
     result = req.json()
-
+    print(result)
     for k, v in result['query']['pages'].items():
         if k == -1:
             response = "Oh, mon poussin. Je ne connais pas très bien " \
                        "le quariter."
         else:
             data = v
-            response = f'{data["extract"]} <a href = "{data["fullurl"]}">'\
-                       '[En sovir plus sur Wikipedia]</a>'
+            response = f'{data["extract"]} <a href = "{data["fullurl"]}"'\
+                ' target="_blank">[En sovir plus sur Wikipedia]</a>'
     return response

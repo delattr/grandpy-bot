@@ -1,8 +1,14 @@
 $(document).ready(function () {
     var counter = 0;
     var logId;
-    // loadSpinner();
+    // Loading animation
+    function loadSpinner() {
 
+        var loading = '<div></div><div></div><div></div>'
+        chatOutput('lds-ellipsis', loading);
+    }
+
+    // Ajax call
     function postAjax(url, data, callback) {
         loadSpinner();
         $.ajax({
@@ -19,15 +25,46 @@ $(document).ready(function () {
             }
         });
     }
-
-
-
-    function loadSpinner() {
-
-        var loading = '<div></div><div></div><div></div>'
-        chatOutput('lds-ellipsis', loading);
+    // Ajax callback function
+    function callback(response) {
+        if (response.status == 'OK') {
+            var promise = loader();
+            promise.then(function () {
+                var answer = `Mon poussin ! as-tu demandé <b>${response.name}</b> ?`
+                chatOutput('grandpy', answer + "<br>La voici : <i>" +
+                    response.address + "</i>");
+                return loader();
+            }).then(function () {
+                createMap(response);
+                return loader();
+            }).then(function () {
+                var answer = "Mais t'ai-je déjà raconté l'histoire de ce quartier qui m'a vu en culottes courtes ?<br> "
+                chatOutput('grandpy', answer + '<i>' + response.wiki + '</i>');
+            });
+        } else if (response.status === 'ZERO_RESULTS') {
+            var promise = loader();
+            promise.then(function () {
+                chatOutput('grandpy', "Désolé, mon poussin. Je ne connais pas l'adresse");
+            });
+        } else {
+            var promise = loader();
+            promise.then(function () {
+                chatOutput('grandpy', "Oh ! Mon pussin, il y avait une erreur.<br>ERROR: " + response.status);
+            });
+        }
     }
-    // Append speechballoon inside of chatting box
+
+    // Display loading animation for 1 second before calling ajax callback function
+    function loader() {
+        return new Promise(function (resolve) {
+            loadSpinner();
+            setTimeout(() => {
+                $('.lds-ellipsis').hide()
+                resolve();
+            }, 1000);
+        });
+    }
+    // Create speechballoon inside of chatting box
     function chatOutput(clss, text) {
         counter++;
         logId = "log_" + counter;
@@ -38,13 +75,13 @@ $(document).ready(function () {
             justify = 'justify-content-end'
         };
 
-        var flex = $("<div>").attr("class", `d-flex ${justify}`);
+        var flex = $("<div>").attr("class", `d-flex w-100 ${justify}`);
         var output = $("<div>").attr({
             class: `m-2 p-2 rounded shadow-sm ${clss}`,
-            id: logId
+            id: logId,
+            style: "max-width: 75%;"
         });
         output.html(text);
-
         $(flex).append(output)
         $("#chatlog").append(flex);
         $("#chatlog").scrollTop($('#chatlog')[0].scrollHeight);
@@ -57,13 +94,12 @@ $(document).ready(function () {
             width: '400px',
             height: '300px'
         });
-
         $("#chatlog").scrollTop($('#chatlog')[0].scrollHeight);
-
         var map = new google.maps.Map(document.getElementById(logId), {
             center: r.location,
             zoom: 12
         });
+
         var marker = new google.maps.Marker({
             position: r.location,
             map: map
@@ -73,58 +109,30 @@ $(document).ready(function () {
             content: `<b>${r.name}</b><br>${r.address}</div>`,
             maxWidth: 200
         });
-
+        // Open InfoWindow when map object is loaded
         map.addListener("tilesloaded", () => {
             infowindow.open(map, marker);
         });
-
-
+        // Open InfoWindow when marker is clicked
+        marker.addListener("click", () => {
+            infowindow.open(map, marker);
+        });
     }
+
     // Submit event
     $("form").submit(function (event) {
         event.preventDefault();
 
         var userInput = $("input").val();
-        if (userInput != null) {
+        if (userInput != "") {
             chatOutput('user', userInput);
-        };
-        // post FormData to the server
-        postAjax('/post', $("form").serialize(), callback);
-        // Clear input field
-        $("form input").val("");
-    });
-    // Ajax callback function
-    function callback(response) {
-        if (response.status == 'OK') {
-            var promise = loader(chatOutput);
-            promise.then(function () {
-                var answer = "Bien sûr mon poussin ! La voici : <br>"
-                chatOutput('grandpy', answer + "<b>" +
-                    response.address + "</b>");
-                return loader();
-            }).then(function () {
-                createMap(response);
-                return loader();
-            }).then(function () {
-                var answer = "Mais t'ai-je déjà raconté l'histoire de ce quartier qui m'a vu en culottes courtes ?<br> "
-                chatOutput('grandpy', answer + response.wiki);
-            });
 
+            // post FormData to the server
+            postAjax('/post', $("form").serialize(), callback);
+            // Clear input field
+            $("form input").val("");
         } else {
-            loader().then(function () {
-                chatOutput('grandpy', "Désolé, mon poussin. Je ne connais pas l'adresse");
-            });
-        }
-
-        function loader() {
-            return new Promise(function (resolve) {
-                loadSpinner();
-                setTimeout(() => {
-                    $('.lds-ellipsis').hide()
-                    resolve();
-                }, 1000);
-            });
-        }
-    }
-
+            chatOutput('grandpy', "Demandes-moi ! l'adresse d'un lieu.");
+        };
+    });
 });
