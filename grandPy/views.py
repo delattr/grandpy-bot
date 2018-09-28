@@ -18,12 +18,10 @@ from flask import render_template, request, json, jsonify
 from grandPy import app
 from .parser import string_parser
 from .api_requests import search_place
-
+import os
 app.config.from_object('config')
-app.config.from_pyfile('config.py')
-key = app.config['API_KEY']
-
-# Convert Json to Object
+# app.config.from_pyfile('config.py')
+key = os.environ.get('MAPS_API_KEY')
 
 
 @app.route("/")
