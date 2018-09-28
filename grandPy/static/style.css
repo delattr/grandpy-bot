@@ -17,14 +17,25 @@ h2 {
     display: none;
 }
 
-
 .user {
     background-color: white;
 }
 
+
 .grandpy,
 .lds-ellipsis {
     background-color: lightgray;
+
+}
+
+#github {
+    color: rgb(48, 48, 48);
+    font-size: 2em
+}
+
+.copyright {
+    display: inline-flex;
+    align-items: center;
 }
 
 .lds-ellipsis {

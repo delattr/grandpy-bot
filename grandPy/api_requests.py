@@ -1,3 +1,20 @@
+"""This file is part of GrandPy Bot.
+
+GrandPy Bot is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+GrandPy Bot is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with GrandPy Bot.  If not, see <https://www.gnu.org/licenses/>.
+"""
+
+
 import requests
 
 
@@ -17,7 +34,6 @@ def search_place(text, key):
         req = requests.get(url, params=payload)
         req.raise_for_status()
         response = req.json()
-        print(response)
 
         if response['status'] == 'OK':
             result = response['candidates'][0]
@@ -95,7 +111,6 @@ def wiki_search(text):
 
     else:
         result = req.json()
-        print(result)
         for k, v in result['query']['pages'].items():
             if k == -1:
                 response = "Oh, mon poussin. Je ne connais pas très bien " \
