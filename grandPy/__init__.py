@@ -16,6 +16,6 @@ along with GrandPy Bot.  If not, see <https://www.gnu.org/licenses/>.
 
 from flask import Flask
 
-app = Flask(__name__, instance_relative_config=True)
+app = Flask(__name__)
 
 from grandPy import views
