@@ -21,14 +21,12 @@ import requests
 def search_place(text, key):
     """ Call Google Place API to get basic information of a place"""
 
-    url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json'
+    url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
     payload = {
         'key': key,
-        'input': text,
-        'inputtype': 'textquery',
-        'language': 'fr',
-        'locationbias': 'ipbias',
-        'fields': 'place_id,name,formatted_address,geometry'
+        'query': text,
+        'region': 'fr',
+        'language': 'fr'
     }
     try:
         req = requests.get(url, params=payload)
@@ -36,7 +34,7 @@ def search_place(text, key):
         response = req.json()
 
         if response['status'] == 'OK':
-            result = response['candidates'][0]
+            result = response['results'][0]
             # Get place ID from response
             place_id = result['place_id']
             # Get information using place_id
