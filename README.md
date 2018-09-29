@@ -29,14 +29,18 @@ This application only supports French at the moment, Queries in other language m
 	pip install -r requirements.txt
 	```
 
-5. **Set your Google maps API key as an environment variable.**
+5. **Set your Google API key as an environment variable.**
+	Both MAPS_API_KEY and PLACE_API_KEY could have same value in development envorinment. For production envorionment, it is recommanded to use different keys for API restriction.
+
 	Linux/Mac OS:
 	```
-	export MAPS_API_KEY=*your api key*
+	export MAPS_API_KEY=your api key
+	export PLACE_KEY=your api key
 	```
 	Windows:
 	```
-	set MAPS_API_KEY=*your api key*
+	set MAPS_API_KEY=your api key
+	set PLACE_KEY=your api key
 	```
 	**Or you could set it directly in *grandPy/views.py* file.**
 
