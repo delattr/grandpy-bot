@@ -14,11 +14,8 @@ This application only supports French at the moment, Queries in other language m
 ## Getting Started
 1. **Install Python 3.x**
 
-<<<<<<< HEAD
-=======
 	If you don't have python yet, [download](https://www.python.org/downloads/) and install.
 
->>>>>>> fb24e660282aad8fa1bc3534f22b6decef097bf7
 2. **Clone this repository.**
 
 	If you have git installed, use following command
@@ -35,12 +32,9 @@ This application only supports French at the moment, Queries in other language m
 	pip install -r requirements.txt
 	```
 
-<<<<<<< HEAD
 5. **Set your Google API key as an environment variable.**
+
 	Both MAPS_API_KEY and PLACE_API_KEY could have same value in development envorinment. For production envorionment, it is recommanded to use different keys for API restriction.
-=======
-5. **Set your Google maps API key as an environment variable.**
->>>>>>> fb24e660282aad8fa1bc3534f22b6decef097bf7
 
 	Linux/Mac OS:
 	```
