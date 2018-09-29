@@ -1,6 +1,6 @@
 
 # GrandPy Bot
-GrandPy Bot is a web application which localizes an address of a place you are looking for and tells you an irrelevent information about the neighberhood of the place.
+GrandPy Bot is a web application which localizes the address of a place you are looking for and tells you an irrelevent information about the neighborhood of the place.
 
 ## Supported language
 - French
@@ -13,15 +13,21 @@ This application only supports French at the moment, Queries in other language m
 
 ## Getting Started
 1. **Install Python 3.x**
+
+<<<<<<< HEAD
+=======
 	If you don't have python yet, [download](https://www.python.org/downloads/) and install.
 
+>>>>>>> fb24e660282aad8fa1bc3534f22b6decef097bf7
 2. **Clone this repository.**
+
 	If you have git installed, use following command
 	```
 	git clone https://github.com/hjung06/GrandPy-bot.git
 	```
 
 3. **Create a virtual environment.**
+
 	Find out more about python [virtual environment](https://docs.python.org/3/tutorial/venv.html)
 
 4. **Install required python modules for this app.**
@@ -29,8 +35,12 @@ This application only supports French at the moment, Queries in other language m
 	pip install -r requirements.txt
 	```
 
+<<<<<<< HEAD
 5. **Set your Google API key as an environment variable.**
 	Both MAPS_API_KEY and PLACE_API_KEY could have same value in development envorinment. For production envorionment, it is recommanded to use different keys for API restriction.
+=======
+5. **Set your Google maps API key as an environment variable.**
+>>>>>>> fb24e660282aad8fa1bc3534f22b6decef097bf7
 
 	Linux/Mac OS:
 	```
@@ -42,16 +52,10 @@ This application only supports French at the moment, Queries in other language m
 	set MAPS_API_KEY=your api key
 	set PLACE_KEY=your api key
 	```
-	**Or you could set it directly in *grandPy/views.py* file.**
+	**Or you could set them directly in *grandPy/views.py* file.**
 
-	Change the variable *key* from:
-	```
-	key = os.environ.get('MAPS_API_KEY')
-	```
-	To:
-	```
-	key = *'Your API Key'
-	```
+	Change variabls *key* and *place_key* from:
+
 6. **run *run.py* in terminal.**
 	```
 	python run.py

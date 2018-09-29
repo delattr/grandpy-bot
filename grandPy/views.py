@@ -20,9 +20,9 @@ from .parser import string_parser
 from .api_requests import search_place
 import os
 app.config.from_object('config')
-# app.config.from_pyfile('config.py')
 key = os.environ.get('MAPS_API_KEY')
 place_key = os.environ.get('PLACE_KEY')
+
 
 @app.route("/")
 def index():
