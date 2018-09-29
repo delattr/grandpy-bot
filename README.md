@@ -23,6 +23,7 @@ This application only supports French at the moment, Queries in other language m
 	```
 3. **Create a virtual environment.**
 	Find out more about python [virtual environment](https://docs.python.org/3/tutorial/venv.html)
+
 4. **Install required python modules for this app.**
 	```
 	pip install -r requirements.txt
