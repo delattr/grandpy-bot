@@ -48,7 +48,7 @@ This application only supports French at the moment, Queries in other language m
 	```
 	**Or you could set them directly in *grandPy/views.py* file.**
 
-	Change variabls *key* and *place_key* from:
+	Change variables *key* and *place_key*
 
 6. **run *run.py* in terminal.**
 	```
