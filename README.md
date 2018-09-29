@@ -15,14 +15,15 @@ This application only supports French at the moment, Queries in other language m
 1. **Install Python 3.x**
 	If you don't have python yet, [download](https://www.python.org/downloads/) and install.
 
-
 2. **Clone this repository.**
 	If you have git installed, use following command
 	```
 	git clone https://github.com/hjung06/GrandPy-bot.git
 	```
+
 3. **Create a virtual environment.**
 	Find out more about python [virtual environment](https://docs.python.org/3/tutorial/venv.html)
+
 4. **Install required python modules for this app.**
 	```
 	pip install -r requirements.txt
