@@ -1,6 +1,6 @@
 
 # GrandPy Bot
-GrandPy Bot is a web application which localizes the address of a place you are looking for and tells you an irrelevent information about the neighborhood of the address.
+GrandPy Bot is a web application which localizes the address of a place you are looking for and tells you an irrelevent information about the neighborhood of the place.
 
 ## Supported language
 - French
