@@ -22,7 +22,7 @@ import os
 app.config.from_object('config')
 # app.config.from_pyfile('config.py')
 key = os.environ.get('MAPS_API_KEY')
-
+place_key = os.environ.get('PLACE_KEY')
 
 @app.route("/")
 def index():
@@ -33,5 +33,5 @@ def index():
 def api_requests():
     question = request.form['user_input']
     place = string_parser(question)
-    result = search_place(place, key)
+    result = search_place(place, place_key)
     return jsonify(result)
