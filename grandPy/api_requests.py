@@ -20,14 +20,12 @@ import requests
 
 def search_place(text, key):
     """ Call Google Place API to get basic information of a place"""
-
     url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
     payload = {
         'key': key,
         'query': text,
         'region': 'fr',
-        'language': 'fr'
-    }
+        'language': 'fr'}
     try:
         req = requests.get(url, params=payload)
         req.raise_for_status()
@@ -70,11 +68,10 @@ def get_detail(place_id, key):
         address_components = response['result']['address_components']
 
         for i, v in enumerate(address_components):
-
             if v['types'][0] == 'route':
                 route = address_components[i]['long_name']
                 break
-            else:  # Get first element from address_compnnents
+            else:
                 route = response['result']['name']
         return route
     except requests.exceptions.HTTPError:
@@ -97,7 +94,6 @@ def wiki_search(text):
         "gsrsearch": text,
         "gsrnamespace": "0",
         "gsrlimit": "1"
-
     }
 
     try:

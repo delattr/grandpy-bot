@@ -124,15 +124,17 @@ $(document).ready(function () {
         event.preventDefault();
 
         var userInput = $("input").val();
-        if (userInput != "") {
+        question = userInput.trim();
+        if (question != "") {
             chatOutput('user', userInput);
 
             // post FormData to the server
             postAjax('/post', $("form").serialize(), callback);
-            // Clear input field
-            $("form input").val("");
+
         } else {
             chatOutput('grandpy', "Demandes-moi ! l'adresse d'un lieu.");
         };
+        // Clear input field
+        $("input").val("");
     });
 });
