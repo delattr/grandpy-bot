@@ -30,9 +30,8 @@ $(document).ready(function () {
         if (response.status == 'OK') {
             var promise = loader();
             promise.then(function () {
-                var answer = `Mon poussin ! as-tu demandé <b>${response.name}</b> ?`
-                chatOutput('grandpy', answer + "<br>La voici : <i>" +
-                    response.address + "</i>");
+                var answer = `Mon poussin ! La voici: ?`
+                chatOutput('grandpy', answer + "<br><i>" + response.address + "</i>");
                 return loader();
             }).then(function () {
                 createMap(response);
