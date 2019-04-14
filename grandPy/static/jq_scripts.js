@@ -17,7 +17,7 @@ $(document).ready(function () {
             data: data,
             success: callback,
             error: (xhr) => {
-                var msg = 'ERROR: ' + xhr.status + ' ' + xhr.statusText;
+                var msg = 'Ajax ERROR: ' + xhr.status + ' ' + xhr.statusText;
                 chatOutput('grandpy', msg);
             },
             complete: function () {
@@ -30,25 +30,28 @@ $(document).ready(function () {
         if (response.status == 'OK') {
             var promise = loader();
             promise.then(function () {
-                var answer = `Mon poussin ! La voici: ?`
+                // Display address
+                var answer = `Here is the address for ${response.name}`
                 chatOutput('grandpy', answer + "<br><i>" + response.address + "</i>");
                 return loader();
             }).then(function () {
+                // Display google Maps
                 createMap(response);
                 return loader();
             }).then(function () {
-                var answer = "Mais t'ai-je déjà raconté l'histoire de ce quartier qui m'a vu en culottes courtes ?<br> "
-                chatOutput('grandpy', answer + '<i>' + response.wiki + '</i>');
+                // Display wiki
+                var answer = `Have I ever told you about ${response.name}`
+                chatOutput('grandpy', answer + '<br><i>' + response.wiki + '</i>');
             });
         } else if (response.status === 'ZERO_RESULTS') {
             var promise = loader();
             promise.then(function () {
-                chatOutput('grandpy', "Désolé, mon poussin. Je ne connais pas l'adresse");
+                chatOutput('grandpy', "Sorry, I couldn't find the address");
             });
         } else {
             var promise = loader();
             promise.then(function () {
-                chatOutput('grandpy', "Oh ! Mon pussin, il y avait une erreur.<br>ERROR: " + response.status);
+                chatOutput('grandpy', "ERROR: " + response.status);
             });
         }
     }
@@ -88,6 +91,7 @@ $(document).ready(function () {
 
     // Display google maps object
     function createMap(r) {
+
         chatOutput('grandpy', "");
         $("#" + logId).css({
             width: '400px',
@@ -131,7 +135,7 @@ $(document).ready(function () {
             postAjax('/post', $("form").serialize(), callback);
 
         } else {
-            chatOutput('grandpy', "Demandes-moi ! l'adresse d'un lieu.");
+            chatOutput('grandpy', "Give me an name of place. I can help you find the address.");
         };
         // Clear input field
         $("input").val("");
