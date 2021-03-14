@@ -29,7 +29,7 @@ It's simple web application which uses stopwords to parse natural language and m
 	```
 
 ## Deployment
- https://oc-grandpy-bot.herokuapp.com/
+ ~~https://oc-grandpy-bot.herokuapp.com/~~ (deprecated)
 
 ## License
 The MIT License (MIT)
